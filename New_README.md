@@ -4,7 +4,7 @@
 **Intern ID:** [NW-084-1F7]
 
 **Full report:** [Penetration Testing Report (PDF)](https://drive.google.com/file/d/15N5_TQWnOntjfuhV1vciV7zvsPYSScry/view?usp=drivesdk)  
-**Letter of Authorization:** [Letter of Authorization (PDF)]()
+**Letter of Authorization:** [Letter of Authorization (PDF)](https://drive.google.com/file/d/1ppR1Pzp_BZQhPMCfHadBYnbm6PUWMYU1/view?usp=drivesdk)
 
 
 | Field | Detail |
@@ -14,7 +14,7 @@
 | Date | 13 November 2026 |
 | Modules completed | Footprinting & Reconnaissance (multiple Kali tools); Zenmap Network Scanning (Practice Lab) |
 | Client/Target | 1. networkwalks.com (the lab domain used for the exercise) <br> 2. My own lab network (10.0.0.0/24, VirtualBox NAT Network) |
-| Permission secured from client? | Yes, in writing. See the [Letter of Authorization](ADD-LETTER-DRIVE-LINK-HERE) |
+| Permission secured from client? | Yes, in writing. See the [Letter of Authorization](https://drive.google.com/file/d/1ppR1Pzp_BZQhPMCfHadBYnbm6PUWMYU1/view?usp=drivesdk) |
 | Phases covered | Phase 1: Reconnaissance & Footprinting <br> Phase 2: Scanning & Network Discovery |
 
 ---
@@ -248,7 +248,7 @@ The main lesson is that a lot can be learned from public information and network
 
 ## 8. Evidences Collected
 
-The screenshots are stored in the [`screenshots/`](screenshots/) folder and shown in section 4.
+The screenshots are stored in and shown in section 4.
 
 | Figure | File | What it shows |
 |---|---|---|
