@@ -1,12 +1,11 @@
 # Penetration Testing Report: Footprinting & Network Scanning Phases
 
 **Cybersecurity | Networkwalks**  
-**Intern ID:** [add your Intern ID here]
+**Intern ID:** [NW-084-1F7]
 
-**Full report:** [Penetration Testing Report (PDF)](ADD-YOUR-GOOGLE-DRIVE-LINK-HERE)  
-**Letter of Authorization:** [Letter of Authorization (PDF)](ADD-LETTER-DRIVE-LINK-HERE)
+**Full report:** [Penetration Testing Report (PDF)](https://drive.google.com/file/d/15N5_TQWnOntjfuhV1vciV7zvsPYSScry/view?usp=drivesdk)  
+**Letter of Authorization:** [Letter of Authorization (PDF)]()
 
-<!-- Keep the two lines above and the "Yes" below only once Networkwalks has issued and signed the letter. Until then, say what is true. -->
 
 | Field | Detail |
 |---|---|
@@ -16,7 +15,7 @@
 | Modules completed | Footprinting & Reconnaissance (multiple Kali tools); Zenmap Network Scanning (Practice Lab) |
 | Client/Target | 1. networkwalks.com (the lab domain used for the exercise) <br> 2. My own lab network (10.0.0.0/24, VirtualBox NAT Network) |
 | Permission secured from client? | Yes, in writing. See the [Letter of Authorization](ADD-LETTER-DRIVE-LINK-HERE) |
-| Phases covered | Phase 1: Reconnaissance & Footprinting <br> Phase 2: Scanning & Network Discovery <br> Phases 3-5: Not covered in this report |
+| Phases covered | Phase 1: Reconnaissance & Footprinting <br> Phase 2: Scanning & Network Discovery |
 
 ---
 
@@ -24,13 +23,12 @@
 
 I carried out these activities only on the lab domain I was given for the exercise and on my own virtual lab network. The material is for education and research. Do not use it to break the law. The instructor, the authors and Networkwalks are not responsible for what anyone does with it. Every action is the responsibility of the person who takes it. Unauthorised access is a crime in most countries, even when nothing is damaged, and can lead to criminal charges, fines and a permanent record. My written authorization from Networkwalks is linked at the top of this page.
 
----
 
 ## 2. Introduction
 
 This report covers two practical activities from the Networkwalks cybersecurity internship. The first is footprinting the `networkwalks.com` domain with six Kali Linux tools. The second is scanning my own lab network with Zenmap to find the live hosts and draw a topology. Together they show how an attacker moves from collecting public information to mapping the hosts on a network.
 
-All commands were run on my Kali Linux 2026.2 virtual machine in VirtualBox. The lab guide asks for Zenmap to be used on a Windows PC. I asked my supervisor if I could use the Zenmap on Kali instead, and he agreed. Each step below gives the exact command, the result I saw, a screenshot as evidence, and a short note on why the finding matters to an attacker.
+All commands were run on my Kali Linux 2026.2 virtual machine in VirtualBox. The lab guide asks for Zenmap to be used. Each step below gives the exact command, the result I saw, a screenshot as evidence, and a short note on why the finding matters to an attacker.
 
 ---
 
@@ -69,11 +67,11 @@ whois networkwalks.com
 - The owner's details are hidden behind a privacy service (Domains By Proxy).
 - Transfer, update, renew and delete locks are set on the domain.
 
-![whois command and registrar summary](screenshots/01-whois-command.jpg)
+![whois command and registrar summary](01-whois-command.jpg)
 
-![WHOIS full record](screenshots/02-whois-full-record.jpg)
+![WHOIS full record](02-whois-full-record.jpg)
 
-![WHOIS name servers and terms of use](screenshots/03-whois-name-servers.jpg)
+![WHOIS name servers and terms of use](03-whois-name-servers.jpg)
 
 #### WhatWeb: what is the website built with?
 
@@ -86,7 +84,7 @@ whatweb networkwalks.com
 - It also uses jQuery 3.7.1 and Google Tag Manager. The page title is "Networkwalks Academy".
 - The server IP shows as `192.232.216.135`.
 
-![WhatWeb output](screenshots/04-whatweb.jpg)
+![WhatWeb output](04-whatweb.jpg)
 
 #### nslookup: what IP address does the name point to?
 
@@ -96,7 +94,7 @@ nslookup networkwalks.com
 
 The answer is `192.232.216.135`, the same IP WhatWeb showed. My first DNS server (8.8.8.8) said recursion was not available, so nslookup tried the next server (`10.182.52.2`) and got the answer there.
 
-![nslookup output](screenshots/05-nslookup.jpg)
+![nslookup output](05-nslookup.jpg)
 
 #### curl -I: what do the HTTP headers give away?
 
@@ -109,7 +107,7 @@ curl -I https://networkwalks.com
 - The `link` header points to the WordPress REST API at `https://networkwalks.com/wp-json/`.
 - A cookie called `__wpdm_client` is set with the `secure` and `HttpOnly` flags.
 
-![curl -I output](screenshots/06-curl-headers.jpg)
+![curl -I output](06-curl-headers.jpg)
 
 #### wafw00f: is there a firewall in front of the site?
 
@@ -121,7 +119,7 @@ The site is behind a ModSecurity (SpiderLabs) Web Application Firewall. wafw00f 
 
 My first run had a typo (`networkwalk.com`), and wafw00f said the site "appears to be down". The name did not exist, so the tool could not resolve it. I fixed the spelling and ran it again.
 
-![wafw00f output, including my typo](screenshots/07-wafw00f.jpg)
+![wafw00f output, including my typo](07-wafw00f.jpg)
 
 #### DNSRecon: what does the DNS reveal?
 
@@ -135,7 +133,7 @@ dnsrecon -d networkwalks.com
 - Eight SRV records point `_autodiscover._tcp` to `cpanelemaildiscovery.cpanel.net`.
 - DNSRecon logged "No answer for DNSSEC query", which matches the WHOIS "unsigned" line.
 
-![DNSRecon output](screenshots/08-dnsrecon.jpg)
+![DNSRecon output](08-dnsrecon.jpg)
 
 ### 4.2 Network Scanning with Zenmap
 
@@ -143,7 +141,7 @@ Zenmap is the graphical version of Nmap. The task was to find my local IP addres
 
 **My Kali VM.** Before scanning I checked the VM from my earlier Kali lab (taken on 29 October 2026). It shows Kali 2026.2, the address `10.0.0.3/24` from DHCP, the default route through `10.0.0.1`, and a working internet check with `ping 8.8.8.8`.
 
-![Kali VM check](screenshots/09-kali-vm-check.png)
+![Kali VM check](09-kali-vm-check.png)
 
 **Step 1: find my IP address and subnet**
 
@@ -154,7 +152,7 @@ ip addr
 
 `eth0` is `10.0.0.3` with netmask `255.255.255.0`, so my subnet is `10.0.0.0/24`. The MAC address of my VM is `08:00:27:6e:36:1c`.
 
-![ifconfig and ip addr](screenshots/10-ifconfig-ip-addr.jpg)
+![ifconfig and ip addr](10-ifconfig-ip-addr.jpg)
 
 **Step 2: run the Ping scan**
 
@@ -174,23 +172,23 @@ The scan checked 256 addresses and found 3 hosts up, in 3.03 seconds:
 
 `10.0.0.3` is my Kali VM, so no MAC address is listed for it. Its MAC address (`08:00:27:6e:36:1c`) comes from the `ifconfig` output above.
 
-![Zenmap Ping scan output](screenshots/11-zenmap-ping-scan.jpg)
+![Zenmap Ping scan output](11-zenmap-ping-scan.jpg)
 
 **Step 3: the topology**
 
 On the **Topology** tab, Zenmap draws my VM (`localhost`) in the centre with the three discovered hosts around it.
 
-![Zenmap topology](screenshots/12-zenmap-topology.jpg)
+![Zenmap topology](12-zenmap-topology.jpg)
 
 **Step 4: save the topology as a PDF**
 
 I used **Save Graphic** on the Topology tab and chose PDF as the file type.
 
-![Save Topology dialog](screenshots/13-save-topology-pdf.jpg)
+![Save Topology dialog](13-save-topology-pdf.jpg)
 
 **The lab result.** The Networkwalks quiz for this lab gave me 100%. My answers matched the scan: subnet `10.0.0.3/24`, 3 live hosts (`10.0.0.3`, `10.0.0.2`, `10.0.0.1`), and the three MAC addresses above.
 
-![Zenmap practice lab result](screenshots/14-practice-lab-result.jpg)
+![Zenmap practice lab result](14-practice-lab-result.jpg)
 
 **Scope note.** This scan covered the VirtualBox NAT Network that my VMs sit on, not my home or office Wi-Fi network.
 
